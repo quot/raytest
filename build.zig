@@ -13,6 +13,19 @@ pub fn build(b: *std.Build) void {
 
     b.installArtifact(exe);
 
+    const raylib_dep = b.dependency("raylib-zig", .{
+        .target = target,
+        .optimize = optimize,
+    });
+
+    const raylib = raylib_dep.module("raylib"); // main raylib module
+    const raygui = raylib_dep.module("raygui"); // raygui module
+    const raylib_artifact = raylib_dep.artifact("raylib"); // raylib C library
+
+    exe.linkLibrary(raylib_artifact);
+    exe.root_module.addImport("raylib", raylib);
+    exe.root_module.addImport("raygui", raygui);
+
     // run step
     const run_exe = b.addRunArtifact(exe);
     const run_step = b.step("run", "Run the binary");

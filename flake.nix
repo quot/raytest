@@ -19,7 +19,7 @@
           zls
         ];
 
-        buildInputs = with pkgs; [];
+        buildInputs = with pkgs; [ libGL xorg.libX11 xorg.libXcursor xorg.libXrandr xorg.libXinerama xorg.libXi ];
       in {
         devShells.default = pkgs.mkShell {inherit nativeBuildInputs buildInputs;};
 
